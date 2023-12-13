@@ -21,3 +21,8 @@ bool SmallerThan(int a, int b)
 
 MulticastDelegateExample multicastExample = new MulticastDelegateExample();
 multicastExample.Test();
+
+
+
+BuildInDelegatesExample buildInExample = new BuildInDelegatesExample();
+buildInExample.Test();
