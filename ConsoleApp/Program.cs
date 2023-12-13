@@ -1,4 +1,5 @@
-﻿
+﻿using Models;
+
 //Instrukcja najwyższego poziomu
 Console.WriteLine("Hello, World!");
 
@@ -9,6 +10,14 @@ void DoSth()
 {
     Console.WriteLine("I am working...");
 }
+
+
+Person person = new Person();
+
+person.FirstName = "Ewa";
+Console.WriteLine(person.FirstName);
+
+
 
 Nullable(null);
 
