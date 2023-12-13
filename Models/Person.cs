@@ -49,9 +49,10 @@ _firstName = firstName;
         //Read-only property - bez settera. Może zwracać jakieś zagregowane dane lub być ustawiony tylko w konstruktorze (final after constructor)
         public DateTime BirthDate { get; }
 
-        public Person()
+        public Person(string firstName, string lastName, DateTime birthDate) : this(birthDate)
         {
-
+            FirstName= firstName;
+            LastName = lastName;
         }
         public Person(DateTime birthDate)
         {

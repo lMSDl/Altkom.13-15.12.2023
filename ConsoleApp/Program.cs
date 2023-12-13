@@ -12,10 +12,19 @@ void DoSth()
 }
 
 
-Person person = new Person();
-
+Person person = new Person(DateTime.Now.AddYears(-30));
 person.FirstName = "Ewa";
 Console.WriteLine(person.FirstName);
+
+
+Person person2 = new Person("Monika", "Monikowska", DateTime.Now.AddYears(-25));
+Console.WriteLine(person2.FullName);
+
+//wykorzystanie inicjalizatora klas - w nawiasach klamrowych (po konstruktorze) wpisujemy wartości początkowe dla właściwości
+Pizza pizza = new Pizza() { Cheese = true, Tomato = true };
+Pizza pizza2 = new Pizza() { Ham = true, Tomato = true };
+Pizza pizza3 = new Pizza() { Ham = true, Tomato = true, Sauce = true };
+Pizza pizza4 = new Pizza(true) { Ham = true, Tomato = true, Sauce = true };
 
 
 
