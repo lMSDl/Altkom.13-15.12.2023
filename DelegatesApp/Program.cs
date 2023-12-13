@@ -17,3 +17,7 @@ bool SmallerThan(int a, int b)
 {
     return a < b;
 }
+
+
+MulticastDelegateExample multicastExample = new MulticastDelegateExample();
+multicastExample.Test();
