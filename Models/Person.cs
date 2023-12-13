@@ -2,6 +2,8 @@
 {
     public class Person
     {
+        public int Id { get; set; }
+
 
         /*private string _firstName = string.Empty;
 
