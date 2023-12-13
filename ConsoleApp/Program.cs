@@ -1,4 +1,5 @@
-﻿//Instrukcja najwyższego poziomu
+﻿
+//Instrukcja najwyższego poziomu
 Console.WriteLine("Hello, World!");
 
 
