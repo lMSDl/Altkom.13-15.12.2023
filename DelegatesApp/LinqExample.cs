@@ -52,6 +52,8 @@ namespace DelegatesApp
             {
                 Console.WriteLine(item);
             }
+            stringResults.ToList().ForEach(x => Console.WriteLine(x));
+
 
             //single używamy gdy mamy pewność, że na liście jest tylko jeden obiekt spełniający warunek
             //Person person = people.Single(x => x.FirstName == "Ewa");
