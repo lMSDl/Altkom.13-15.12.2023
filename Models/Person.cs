@@ -5,6 +5,8 @@
         public Person() { }
         public int Id { get; set; }
 
+        public bool IsDeleted { get; set; }
+
 
         /*private string _firstName = string.Empty;
 

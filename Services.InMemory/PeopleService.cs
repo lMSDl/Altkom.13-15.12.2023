@@ -38,7 +38,8 @@ namespace Services.InMemory
             if(person == null)
                 return false;
 
-            _people.Remove(person);
+            //_people.Remove(person);
+            person.IsDeleted = true;
             return true;
         }
 
@@ -54,13 +55,13 @@ namespace Services.InMemory
 
             return null;*/
             //return _people.FirstOrDefault(x => x.Id == id);
-            return _people.SingleOrDefault(x => x.Id == id);
+            return _people.Where(x => !x.IsDeleted).SingleOrDefault(x => x.Id == id);
         }
 
         public IEnumerable<Person> Read()
         {
             //return new List<Person>(_people);
-            return _people.ToList();
+            return _people.Where(x => !x.IsDeleted).ToList();
         }
 
         public void Update(int id, Person entity)
