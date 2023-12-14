@@ -1,10 +1,12 @@
 ﻿using Models;
+using Newtonsoft.Json;
 using Services.InMemory;
 using Services.Interfaces;
 using System.Globalization;
-using System.Reflection.Emit;
 using System.Text;
 using System.Text.Json;
+using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 CultureInfo a = System.Globalization.CultureInfo.CurrentUICulture;
@@ -51,6 +53,14 @@ while (!exit)
             ToXML();
             break;
 
+        case '7':
+            ToNewtonSoftJson();
+            break;
+
+        case '8':
+            ToNewtonSoftXML();
+            break;
+
         default:
             Console.WriteLine();
             Console.WriteLine("Błędna komenda");
@@ -58,6 +68,34 @@ while (!exit)
             break;
     }
 
+}
+
+void ToNewtonSoftXML()
+{
+    int id = RequestForId();
+    Person person = peopleService.Read(id);
+
+    string json = JsonConvert.SerializeObject(person);
+    XDocument xDocument =  JsonConvert.DeserializeXNode(json, nameof(Person));
+    string xml = xDocument.ToString();
+    Console.WriteLine(xml);
+    Console.ReadLine();
+}
+
+void ToNewtonSoftJson()
+{
+    int id = RequestForId();
+    Person person = peopleService.Read(id);
+
+    JsonSerializerSettings jsonSettings = new JsonSerializerSettings();
+    jsonSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+    //jsonSettings.DateFormatHandling = DateFormatHandling.MicrosoftDateFormat;
+    jsonSettings.DateFormatString = "MM yy ddd";
+    jsonSettings.TypeNameHandling = TypeNameHandling.All;
+    
+    string json = JsonConvert.SerializeObject(person, jsonSettings);
+    Console.WriteLine(json);
+    Console.ReadLine();
 }
 
 void ToXML()
@@ -90,7 +128,7 @@ void ToJson()
     jsonOptions.WriteIndented = true;
 #endif
 
-    string json = JsonSerializer.Serialize(person, jsonOptions);
+    string json = System.Text.Json.JsonSerializer.Serialize(person, jsonOptions);
 
     Console.WriteLine(json);
     Console.ReadLine();
@@ -104,7 +142,9 @@ void ShowMenu()
     Console.WriteLine("3. " + PeopleApp.Properties.Resources.Edit);
     Console.WriteLine("4. " + PeopleApp.Properties.Resources.End);
     Console.WriteLine("5. JSON");
-    Console.WriteLine("5. XML");
+    Console.WriteLine("6. XML");
+    Console.WriteLine("7. NewtonSoft JSON");
+    Console.WriteLine("8. Newtonsoft XML");
 }
 
 void ShowPeople()
