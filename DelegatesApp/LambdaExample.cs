@@ -18,6 +18,9 @@ namespace DelegatesApp
         {
             Calculator += Plus;
 
+                        //<prametry> <operator> <ciało>
+
+
             Calculator += //delegate (int a, int b) { return a - b; };
                           //(int a, int b) => { return a - b; };
                           //(a, b) => { return a - b; };

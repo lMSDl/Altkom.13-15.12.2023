@@ -61,6 +61,8 @@ void Nullable(string? ala)
         c = result.HasValue ? result.Value : 0; // ? : - operator warunkowy:  (warunek) ? (tak) : (nie);
     }
 
+    c = a.HasValue ? a.Value : b.HasValue ? b.Value : 0;
+
 
     c = (a - b == 0 || a - b == null) ? ((a + b) ?? 0) : ((a - b).HasValue ? (a - b).Value : 0);
 
