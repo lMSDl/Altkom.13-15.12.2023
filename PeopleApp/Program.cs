@@ -3,6 +3,7 @@ using Services.InMemory;
 using Services.Interfaces;
 using System.Globalization;
 using System.Reflection.Emit;
+using System.Text.Json;
 
 CultureInfo a = System.Globalization.CultureInfo.CurrentUICulture;
 
@@ -40,6 +41,10 @@ while (!exit)
             exit = true;
             break;
 
+        case '5':
+            ToJson();
+            break;
+
         default:
             Console.WriteLine();
             Console.WriteLine("Błędna komenda");
@@ -49,19 +54,23 @@ while (!exit)
 
 }
 
+void ToJson()
+{
+    int id = RequestForId();
+    Person person = peopleService.Read(id);
 
+    JsonSerializerOptions jsonOptions = new JsonSerializerOptions();
+    jsonOptions.IgnoreReadOnlyProperties = true;
+    jsonOptions.NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.WriteAsString;
+#if DEBUG
+    jsonOptions.WriteIndented = true;
+#endif
 
+    string json = JsonSerializer.Serialize(person, jsonOptions);
 
-
-
-
-
-
-
-
-
-
-
+    Console.WriteLine(json);
+    Console.ReadLine();
+}
 
 void ShowMenu()
 {
@@ -70,6 +79,7 @@ void ShowMenu()
     Console.WriteLine("2. " + PeopleApp.Properties.Resources.Remove);
     Console.WriteLine("3. " + PeopleApp.Properties.Resources.Edit);
     Console.WriteLine("4. " + PeopleApp.Properties.Resources.End);
+    Console.WriteLine("5. JSON");
 }
 
 void ShowPeople()
