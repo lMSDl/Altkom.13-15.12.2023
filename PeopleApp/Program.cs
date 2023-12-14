@@ -3,7 +3,9 @@ using Services.InMemory;
 using Services.Interfaces;
 using System.Globalization;
 using System.Reflection.Emit;
+using System.Text;
 using System.Text.Json;
+using System.Xml.Serialization;
 
 CultureInfo a = System.Globalization.CultureInfo.CurrentUICulture;
 
@@ -45,12 +47,34 @@ while (!exit)
             ToJson();
             break;
 
+        case '6':
+            ToXML();
+            break;
+
         default:
             Console.WriteLine();
             Console.WriteLine("Błędna komenda");
             Console.ReadLine();
             break;
     }
+
+}
+
+void ToXML()
+{
+    int id = RequestForId();
+    Person person = peopleService.Read(id);
+
+    XmlSerializer xmlSerializer = new XmlSerializer(person.GetType());
+
+    MemoryStream memoryStream = new MemoryStream();
+    xmlSerializer.Serialize(memoryStream, person);
+
+    string xml = Encoding.Default.GetString(memoryStream.ToArray());
+
+    Console.WriteLine(xml);
+    Console.ReadLine();
+
 
 }
 
@@ -80,6 +104,7 @@ void ShowMenu()
     Console.WriteLine("3. " + PeopleApp.Properties.Resources.Edit);
     Console.WriteLine("4. " + PeopleApp.Properties.Resources.End);
     Console.WriteLine("5. JSON");
+    Console.WriteLine("5. XML");
 }
 
 void ShowPeople()
