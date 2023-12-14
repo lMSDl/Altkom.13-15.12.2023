@@ -1,7 +1,12 @@
 ﻿using Models;
 using Services.InMemory;
 using Services.Interfaces;
+using System.Globalization;
 using System.Reflection.Emit;
+
+CultureInfo a = System.Globalization.CultureInfo.CurrentUICulture;
+
+Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("de");
 
 IPeopleService peopleService = new PeopleService();
 
@@ -61,10 +66,10 @@ while (!exit)
 void ShowMenu()
 {
     Console.WriteLine();
-    Console.WriteLine("1. Dodaj");
-    Console.WriteLine("2. Usuń");
-    Console.WriteLine("3. Edytuj");
-    Console.WriteLine("4. Koniec");
+    Console.WriteLine("1. " + PeopleApp.Properties.Resources.Add);
+    Console.WriteLine("2. " + PeopleApp.Properties.Resources.Remove);
+    Console.WriteLine("3. " + PeopleApp.Properties.Resources.Edit);
+    Console.WriteLine("4. " + PeopleApp.Properties.Resources.End);
 }
 
 void ShowPeople()
@@ -99,8 +104,8 @@ void Add()
 {
     Console.WriteLine();
 
-    string firstName = RequestForData("Podaj imię:");
-    string lastName = RequestForData("Podaj nazwisko:");
+    string firstName = RequestForData(PeopleApp.Properties.Resources.PutFirstName);
+    string lastName = RequestForData(PeopleApp.Properties.Resources.PutLastName);
 
     string birthDate;
     do
@@ -125,8 +130,8 @@ void Edit()
     } while (person == null);
 
     Console.WriteLine();
-    string firstName = RequestForData("Podaj imię:", true);
-    string lastName = RequestForData("Podaj nazwisko:", true);
+    string firstName = RequestForData(PeopleApp.Properties.Resources.PutFirstName, true);
+    string lastName = RequestForData(PeopleApp.Properties.Resources.PutLastName, true);
     string birthDate = RequestForData("Podaj datę urodzenia:", true);
 
     Person newPerson = new Person(string.IsNullOrWhiteSpace(firstName) ? person.FirstName : firstName,
