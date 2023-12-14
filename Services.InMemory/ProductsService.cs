@@ -1,13 +1,15 @@
 ﻿using Models;
+using Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Services.InMemory
 {
-    internal class ProductsService
+    internal class ProductsService : IProductsService
     {
 
         private readonly ICollection<Product> _products = new List<Product>
@@ -33,5 +35,36 @@ namespace Services.InMemory
             new Product("Olej", 49, DateTime.Now.AddSeconds(3000000)),
             new Product("Choinka", 300)
         };
+
+        public IEnumerable<Product> GetAboveAverage()
+        {
+            float average = _products.Average(x => x.Price);
+            return _products.Where(x => x.Price > average).ToList();
+        }
+
+        public IEnumerable<Product> GetBelowPrice(float price)
+        {
+            return _products.Where(x => x.Price < price).ToList();
+        }
+
+        public float GetMinimalPrice()
+        {
+            return _products.Min(x => x.Price);
+        }
+
+        public float? GetPrice(string name)
+        {
+            return _products.SingleOrDefault(x => x.Name == name)?.Price;
+        }
+
+        public float GetPriceSumFor5CharNames()
+        {
+            return _products.Where(x => x.Name.Length < 5).Sum(x => x.Price);
+        }
+
+        public string GetProductsSummary()
+        {
+            return string.Join(";", _products.Select(x => x.Summary).ToList());
+        }
     }
 }
