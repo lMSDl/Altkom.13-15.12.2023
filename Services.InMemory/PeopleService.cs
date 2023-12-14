@@ -24,8 +24,8 @@ namespace Services.InMemory
 
             entity.Id = maxId + 1;*/
 
-            //_people.Select(x => x.Id).Max();
-            entity.Id = _people.Max(x => x.Id) + 1;
+            //entity.Id = (_people.Any() ? _people.Max(x => x.Id) : 0) + 1;
+            entity.Id = _people.Select(x => x.Id).DefaultIfEmpty(0).Max() + 1;
 
             _people.Add(entity);
 

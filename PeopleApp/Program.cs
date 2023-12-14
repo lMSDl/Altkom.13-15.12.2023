@@ -1,19 +1,159 @@
 ﻿using Models;
 using Services.InMemory;
 using Services.Interfaces;
+using System.Reflection.Emit;
 
 IPeopleService peopleService = new PeopleService();
 
-Person p = new Person("Ewa", "Ewowska", new DateTime(1990, 1, 1));
-peopleService.Create(p);
+Initialize();
 
-p = new Person("Adam", "Adamski", new DateTime(1980, 12, 24));
-peopleService.Create(p);
+bool exit = false;
 
-
-IEnumerable<Person> people = peopleService.Read();
-
-foreach(Person person in people)
+while (!exit)
 {
-    Console.WriteLine($"{person.Id}\t{person.FirstName}\t{person.LastName}\t{person.Age}");
+    Console.Clear();
+
+    ShowPeople();
+    ShowMenu();
+
+    char input = Console.ReadKey().KeyChar;
+    switch (input)
+    {
+        case '1':
+            Add();
+            break;
+
+        case '2':
+            Delete();
+            break;
+
+        case '3':
+            Edit();
+            break;
+
+        case '4':
+            exit = true;
+            break;
+
+        default:
+            Console.WriteLine();
+            Console.WriteLine("Błędna komenda");
+            Console.ReadLine();
+            break;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void ShowMenu()
+{
+    Console.WriteLine();
+    Console.WriteLine("1. Dodaj");
+    Console.WriteLine("2. Usuń");
+    Console.WriteLine("3. Edytuj");
+    Console.WriteLine("4. Koniec");
+}
+
+void ShowPeople()
+{
+    IEnumerable<Person> people = peopleService.Read();
+    people = people.OrderBy(x => x.Id).ToList();
+    foreach (Person person in people)
+    {
+        Console.WriteLine($"{person.Id,-3}{person.FirstName,-15}{person.LastName,-25}{person.Age,-4}");
+    }
+}
+
+void Initialize()
+{
+    Person p = new Person("Ewa", "Ewowska", new DateTime(1990, 1, 1));
+    peopleService.Create(p);
+
+    p = new Person("Adam", "Adamski", new DateTime(1980, 12, 24));
+    peopleService.Create(p);
+
+    p = new Person("Wojeciech", "Wojeciechowski", new DateTime(2000, 1, 4));
+    peopleService.Create(p);
+}
+
+void Delete()
+{
+    int id = RequestForId();
+    _ = peopleService.Delete(id);
+}
+
+void Add()
+{
+    Console.WriteLine();
+
+    string firstName = RequestForData("Podaj imię:");
+    string lastName = RequestForData("Podaj nazwisko:");
+
+    string birthDate;
+    do
+    {
+        birthDate = RequestForData("Podaj datę urodzenia:");
+    } while (!DateTime.TryParse(birthDate, out _)); // _ - discard, czyli ignorujemy / nie insteresuje nas ten parametr
+
+    Person newPerson = new Person(firstName,
+                                  lastName,
+                                  DateTime.Parse(birthDate));
+
+    _ = peopleService.Create(newPerson);
+}
+
+void Edit()
+{
+    Person person;
+    do
+    {
+        int id = RequestForId();
+        person = peopleService.Read(id);
+    } while (person == null);
+
+    Console.WriteLine();
+    string firstName = RequestForData("Podaj imię:", true);
+    string lastName = RequestForData("Podaj nazwisko:", true);
+    string birthDate = RequestForData("Podaj datę urodzenia:", true);
+
+    Person newPerson = new Person(string.IsNullOrWhiteSpace(firstName) ? person.FirstName : firstName,
+                                  string.IsNullOrWhiteSpace(lastName) ? person.LastName : lastName,
+                                  DateTime.TryParse(birthDate, out DateTime db) ? db : person.BirthDate);
+
+    peopleService.Update(person.Id, newPerson);
+}
+
+int RequestForId()
+{
+    Console.WriteLine();
+    Console.Write("Podaj identyfikator: ");
+    string value = Console.ReadLine();
+    int id = int.Parse(value);
+    return id;
+}
+
+//parametr opcjonale - parametr, który posiada przypisaną domyślną wartość i nie wymaga podawania w trakcie wywoływania funkcji
+//parametry opcjonale muszą być na końcu listy parametrów
+static string RequestForData(string label, bool allowEmpty = false)
+{
+    string data;
+    do
+    {
+        Console.WriteLine(label);
+        data = Console.ReadLine();
+    } while (!allowEmpty && string.IsNullOrWhiteSpace(data));
+    return data;
 }
