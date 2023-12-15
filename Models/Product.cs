@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public class Product
+    public class Product : Entity
     {
         public Product() { }
         public Product(string name, float price, DateTime? expirationdate)

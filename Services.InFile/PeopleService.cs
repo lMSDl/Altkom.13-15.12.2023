@@ -13,7 +13,7 @@ namespace Services.InFile
         public PeopleService(string path)
         {
             _path = path;
-            _people = LoadData();
+            _entities = LoadData();
         }
 
         private ICollection<Person> LoadData()
@@ -55,7 +55,7 @@ namespace Services.InFile
 
         private void SaveData()
         {
-            string json = JsonSerializer.Serialize(_people);
+            string json = JsonSerializer.Serialize(_entities);
             File.WriteAllText(_path, json);
         }
 

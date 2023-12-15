@@ -4,79 +4,11 @@ using Services.Interfaces;
 namespace Services.InMemory
 {
     //: - implementacja interfejsu
-    public class PeopleService : IPeopleService
+    public class PeopleService : GenericService<Person>, IPeopleService
     {
-        protected ICollection<Person> _people;
-
-        public PeopleService()
+        public IEnumerable<Person> ReadByLastName(string lastName)
         {
-            _people = new List<Person>();
-        }
-
-        public virtual int Create(Person entity)
-        {
-            /*int maxId = 0;
-            foreach (Person person in _people)
-            {
-                if(person.Id > maxId)
-                    maxId = person.Id;
-            }
-
-            entity.Id = maxId + 1;*/
-
-            //entity.Id = (_people.Any() ? _people.Max(x => x.Id) : 0) + 1;
-            entity.Id = _people.Select(x => x.Id).DefaultIfEmpty(0).Max() + 1;
-
-            _people.Add(entity);
-
-            return entity.Id;
-        }
-
-        public virtual bool Delete(int id)
-        {
-            Person? person = Read(id);
-            if(person == null)
-                return false;
-
-            _people.Remove(person);
-            //person.IsDeleted = true;
-            return true;
-        }
-
-        public Person? Read(int id)
-        {
-            /*foreach(Person person in _people)
-            {
-                if(id == person.Id)
-                {
-                    return person;
-                }
-            }
-
-            return null;*/
-            //return _people.FirstOrDefault(x => x.Id == id);
-            return _people.Where(x => !x.IsDeleted).SingleOrDefault(x => x.Id == id);
-        }
-
-        public IEnumerable<Person> Read()
-        {
-            //return new List<Person>(_people);
-            return _people.Where(x => !x.IsDeleted).ToList();
-        }
-
-        public virtual void Update(int id, Person entity)
-        {
-            if(Delete(id))
-            {
-                entity.Id = id;
-                _people.Add(entity);
-            }
-
-            //Person person = Read(id);
-            //person.FirstName = entity.FirstName;
-            //...
-            //person.BirthDate = entity.BirthDate;
-
+            return _entities.Where(x => x.LastName == lastName).ToList();
         }
     }
 }

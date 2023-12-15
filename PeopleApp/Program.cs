@@ -1,6 +1,5 @@
 ﻿using Models;
 using Newtonsoft.Json;
-using Services.InMemory;
 using Services.Interfaces;
 using System.Globalization;
 using System.Text;
@@ -16,7 +15,7 @@ Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("de");
 string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 path = Path.Combine(path, "people.json");
 
-IPeopleService peopleService = new Services.InFile.PeopleService(path);
+IPeopleService peopleService = new Services.InMemory.PeopleService();
 
 Initialize();
 

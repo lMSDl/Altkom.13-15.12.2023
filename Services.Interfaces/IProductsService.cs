@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Services.Interfaces
 {
-    public interface IProductsService
+    public interface IProductsService : IGenericService<Product>
     {
         float GetMinimalPrice();
         float? GetPrice(string name);

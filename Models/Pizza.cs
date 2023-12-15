@@ -8,7 +8,7 @@ namespace Models
 {
     //Klasa o potencjalnie robudowanych konstruktorach (np. teleskopowych)
     //Zamiast tworzyć wiele konstruktorów możemy skorzystać ze wzorca budowniczego lub (w przypadku c#) z inicjalizatora klas
-    public class Pizza
+    public class Pizza : Entity
     {
         public Pizza() { }
 
