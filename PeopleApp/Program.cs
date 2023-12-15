@@ -196,12 +196,40 @@ void Add()
         birthDate = RequestForData("Podaj datę urodzenia:");
     } while (!DateTime.TryParse(birthDate, out _)); // _ - discard, czyli ignorujemy / nie insteresuje nas ten parametr
 
-    Person newPerson = new Person(firstName,
-                                  lastName,
-                                  DateTime.Parse(birthDate));
-
+    Person newPerson = CreatePerson(firstName, lastName, birthDate);
     _ = peopleService.Create(newPerson);
 }
+
+Person CreatePerson(string firstName, string lastName, string birthDate)
+{
+    Person? newPerson;
+    do
+    {
+        Console.WriteLine("1. Osoba; 2. Student; 3. Pracownik");
+        char input = Console.ReadKey().KeyChar;
+        switch (input)
+        {
+            case '1':
+                newPerson = new Person(firstName,
+                                              lastName,
+                                              DateTime.Parse(birthDate));
+                break;
+            case '2':
+                newPerson = new Student(firstName, lastName, DateTime.Parse(birthDate)) { IndexNumber = RequestForData("Numer indeksu:") };
+                break;
+
+            case '3':
+                newPerson = new Worker(firstName, lastName, DateTime.Parse(birthDate)) { Specialisation = RequestForData("Specjalizacja:") };
+                break;
+            default:
+                newPerson = null;
+                break;
+        }
+    } while (newPerson == null);
+    return newPerson;
+}
+
+
 
 void Edit()
 {
