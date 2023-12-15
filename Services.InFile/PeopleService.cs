@@ -39,7 +39,7 @@ namespace Services.InFile
             }
             else
             {
-                return new List<Person>();
+                return new  List<Person>();
             }
         }
 
@@ -67,13 +67,19 @@ namespace Services.InFile
             }
         }*/
 
-        private void SaveData()
+        private async Task SaveDataAsync()
         {
+            Thread thread = Thread.CurrentThread;
+            
             string json = JsonSerializer.Serialize(_entities);
             if (_certName == null)
                 File.WriteAllText(_path, json);
             else
-                File.WriteAllBytes(_path, _encryption.Encrypt(json, _certName));
+                await File.WriteAllBytesAsync(_path, _encryption.Encrypt(json, _certName));
+
+            thread = Thread.CurrentThread;
+
+            Thread.Sleep(5000);
         }
 
         /*private void SaveData()
@@ -97,7 +103,7 @@ namespace Services.InFile
         {
             //base - odwołanie się do implementacji bazowej
             int id = base.Create(entity);
-            SaveData();
+            _ = SaveDataAsync();
             return id;
         }
 
@@ -105,14 +111,18 @@ namespace Services.InFile
         {
             bool isDeleted = base.Delete(id);
             if (isDeleted)
-                SaveData();
+                _ = SaveDataAsync();
             return isDeleted;
         }
 
-        public override void Update(int id, Person entity)
+        public override async void Update(int id, Person entity)
         {
             base.Update(id, entity);
-            SaveData();
+
+            Thread thread = Thread.CurrentThread;
+            await SaveDataAsync();
+
+            thread = Thread.CurrentThread;
         }
 
     }

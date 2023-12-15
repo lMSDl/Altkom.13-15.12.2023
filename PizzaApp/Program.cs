@@ -3,10 +3,16 @@ using Services.InMemory;
 using Services.Interfaces;
 using System.Text.Json;
 
-IGenericService<Pizza> service = new GenericService<Pizza>();
+IGenericAsyncService<Pizza> service = new GenericAsyncService<Pizza>();
 
-service.Create(new Pizza(true, true));
-service.Create(new Pizza(true));
-service.Create(new Pizza(true, true, false, true, true));
+await service.CreateAsync(new Pizza(true, true));
+await service.CreateAsync(new Pizza(true));
+await service.CreateAsync(new Pizza(true, true, false, true, true));
 
-Console.WriteLine( JsonSerializer.Serialize(service.Read()) );
+Console.WriteLine( JsonSerializer.Serialize(await service.ReadAsync()) );
+
+Pizza pizza = await service.ReadAsync(1);
+
+await service.UpdateAsync(1, pizza);
+
+Console.WriteLine();
