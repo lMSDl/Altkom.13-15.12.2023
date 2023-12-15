@@ -13,7 +13,10 @@ CultureInfo a = System.Globalization.CultureInfo.CurrentUICulture;
 
 Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("de");
 
-IPeopleService peopleService = new PeopleService();
+string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+path = Path.Combine(path, "people.json");
+
+IPeopleService peopleService = new Services.InFile.PeopleService(path);
 
 Initialize();
 
@@ -105,10 +108,12 @@ void ToXML()
 
     XmlSerializer xmlSerializer = new XmlSerializer(person.GetType());
 
-    MemoryStream memoryStream = new MemoryStream();
+    using MemoryStream memoryStream = new MemoryStream();
     xmlSerializer.Serialize(memoryStream, person);
 
     string xml = Encoding.Default.GetString(memoryStream.ToArray());
+
+    //memoryStream.Dispose();
 
     Console.WriteLine(xml);
     Console.ReadLine();
@@ -159,6 +164,9 @@ void ShowPeople()
 
 void Initialize()
 {
+    if (peopleService.Read().Any())
+        return;
+
     Person p = new Person("Ewa", "Ewowska", new DateTime(1990, 1, 1));
     peopleService.Create(p);
 

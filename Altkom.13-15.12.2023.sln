@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services.Interfaces", "Serv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services.InMemory", "Services.InMemory\Services.InMemory.csproj", "{3F72D3A1-495C-4FF9-8545-54AAE6D1EE02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleApp", "PeopleApp\PeopleApp.csproj", "{8A8E4494-2F1C-472A-B84A-B2181F9F2EC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeopleApp", "PeopleApp\PeopleApp.csproj", "{8A8E4494-2F1C-472A-B84A-B2181F9F2EC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DelegatesApp", "DelegatesApp\DelegatesApp.csproj", "{88488003-DD88-4AAD-B2F6-AF8C3366DDC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DelegatesApp", "DelegatesApp\DelegatesApp.csproj", "{88488003-DD88-4AAD-B2F6-AF8C3366DDC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.InFile", "Services.InFile\Services.InFile.csproj", "{8D0288B3-62E6-4DF8-9C37-838D7572C48E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{88488003-DD88-4AAD-B2F6-AF8C3366DDC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88488003-DD88-4AAD-B2F6-AF8C3366DDC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88488003-DD88-4AAD-B2F6-AF8C3366DDC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D0288B3-62E6-4DF8-9C37-838D7572C48E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D0288B3-62E6-4DF8-9C37-838D7572C48E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D0288B3-62E6-4DF8-9C37-838D7572C48E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D0288B3-62E6-4DF8-9C37-838D7572C48E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
