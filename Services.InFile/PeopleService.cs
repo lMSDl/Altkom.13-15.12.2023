@@ -1,4 +1,5 @@
 ﻿using Models;
+using Services.InFile.Encryption;
 using Services.Interfaces;
 using System.IO;
 using System.Net.Http.Json;
@@ -9,18 +10,31 @@ namespace Services.InFile
     public class PeopleService : Services.InMemory.PeopleService
     {
         private readonly string _path;
+        private SymmetricEncryption? _encryption;
+        private readonly string _password;
 
-        public PeopleService(string path)
+        public PeopleService(string path, string? password)
         {
             _path = path;
+            _encryption = new SymmetricEncryption("alamakota");
+            _password = password;
             _entities = LoadData();
+        }
+        public PeopleService(string path) : this(path, null)
+        {
+
         }
 
         private ICollection<Person> LoadData()
         {
             if(File.Exists(_path))
             {
-                string json = File.ReadAllText(_path);
+               string json;
+                if (_password == null)
+                    json = File.ReadAllText(_path);
+                else
+                    json = _encryption.DecryptToString(File.ReadAllBytes(_path), _password);
+                
                 return JsonSerializer.Deserialize<ICollection<Person>>(json) ?? new List<Person>();
             }
             else
@@ -56,7 +70,10 @@ namespace Services.InFile
         private void SaveData()
         {
             string json = JsonSerializer.Serialize(_entities);
-            File.WriteAllText(_path, json);
+            if (_password == null)
+                File.WriteAllText(_path, json);
+            else
+                File.WriteAllBytes(_path, _encryption.Encrypt(json, _password));
         }
 
         /*private void SaveData()
