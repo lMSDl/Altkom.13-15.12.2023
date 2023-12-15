@@ -4,7 +4,8 @@ using Services.Interfaces;
 namespace Services.InMemory
 {
     //: - implementacja interfejsu
-    public class GenericService<T> : IGenericService<T> where T : Entity
+    //<T> - typ generyczny
+    public class GenericService<T> : IGenericService<T> where T : Entity // gdzie T dziedziczy po Entity (robimy to by mieć dostęp do właściwości Id oraz IsDeleted)
     {
         protected ICollection<T> _entities;
 
