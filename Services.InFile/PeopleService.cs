@@ -6,9 +6,8 @@ using System.Text.Json;
 
 namespace Services.InFile
 {
-    public class PeopleService : IPeopleService
+    public class PeopleService : Services.InMemory.PeopleService
     {
-        private readonly ICollection<Person> _people;
         private readonly string _path;
 
         public PeopleService(string path)
@@ -77,53 +76,27 @@ namespace Services.InFile
 
         }*/
 
-
-        public int Create(Person entity)
+        public override int Create(Person entity)
         {
-            entity.Id = _people.Select(x => x.Id).DefaultIfEmpty(0).Max() + 1;
-
-            _people.Add(entity);
-
+            //base - odwołanie się do implementacji bazowej
+            int id = base.Create(entity);
             SaveData();
-
-            return entity.Id;
+            return id;
         }
 
-        public bool Delete(int id)
+        public override bool Delete(int id)
         {
-            Person? person = Read(id);
-            if (person == null)
-            {
-                return false;
-            }
-
-            person.IsDeleted = true;
-
-
-            SaveData();
-            return true;
-        }
-
-        public Person? Read(int id)
-        {
-            return _people.Where(x => !x.IsDeleted).SingleOrDefault(x => x.Id == id);
-        }
-
-        public IEnumerable<Person> Read()
-        {
-            return _people.Where(x => !x.IsDeleted).ToList();
-        }
-
-        public void Update(int id, Person entity)
-        {
-            if (Delete(id))
-            {
-                entity.Id = id;
-                _people.Add(entity);
-
+            bool isDeleted = base.Delete(id);
+            if (isDeleted)
                 SaveData();
-            }
-
+            return isDeleted;
         }
+
+        public override void Update(int id, Person entity)
+        {
+            base.Update(id, entity);
+            SaveData();
+        }
+
     }
 }

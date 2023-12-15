@@ -6,14 +6,14 @@ namespace Services.InMemory
     //: - implementacja interfejsu
     public class PeopleService : IPeopleService
     {
-        private readonly ICollection<Person> _people;
+        protected ICollection<Person> _people;
 
         public PeopleService()
         {
             _people = new List<Person>();
         }
 
-        public int Create(Person entity)
+        public virtual int Create(Person entity)
         {
             /*int maxId = 0;
             foreach (Person person in _people)
@@ -32,14 +32,14 @@ namespace Services.InMemory
             return entity.Id;
         }
 
-        public bool Delete(int id)
+        public virtual bool Delete(int id)
         {
             Person? person = Read(id);
             if(person == null)
                 return false;
 
-            //_people.Remove(person);
-            person.IsDeleted = true;
+            _people.Remove(person);
+            //person.IsDeleted = true;
             return true;
         }
 
@@ -64,7 +64,7 @@ namespace Services.InMemory
             return _people.Where(x => !x.IsDeleted).ToList();
         }
 
-        public void Update(int id, Person entity)
+        public virtual void Update(int id, Person entity)
         {
             if(Delete(id))
             {
