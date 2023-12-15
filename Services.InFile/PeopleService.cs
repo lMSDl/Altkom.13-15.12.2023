@@ -17,8 +17,20 @@ namespace Services.InFile
             _people = LoadData();
         }
 
-
         private ICollection<Person> LoadData()
+        {
+            if(File.Exists(_path))
+            {
+                string json = File.ReadAllText(_path);
+                return JsonSerializer.Deserialize<ICollection<Person>>(json) ?? new List<Person>();
+            }
+            else
+            {
+                return new List<Person>();
+            }
+        }
+
+        /*private ICollection<Person> LoadData()
         {
             //klasy strumieniowe - zarządzają danymi na postawie stumienia byte, a nie właściwości jak zwykłe klasy
             FileStream fileStream = new FileStream(_path, FileMode.OpenOrCreate);
@@ -40,9 +52,15 @@ namespace Services.InFile
             {
                 return new List<Person>();
             }
-        }
+        }*/
 
         private void SaveData()
+        {
+            string json = JsonSerializer.Serialize(_people);
+            File.WriteAllText(_path, json);
+        }
+
+        /*private void SaveData()
         {
             string json = JsonSerializer.Serialize(_people);
 
@@ -57,7 +75,7 @@ namespace Services.InFile
             //metoda flush wymusza wypchnięcie danych do strumienia
             streamWriter.Flush();
 
-        }
+        }*/
 
 
         public int Create(Person entity)
