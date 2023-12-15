@@ -10,14 +10,14 @@ namespace Services.InFile
     public class PeopleService : Services.InMemory.PeopleService
     {
         private readonly string _path;
-        private SymmetricEncryption? _encryption;
-        private readonly string _password;
+        private AsymmetricEncryption? _encryption;
+        private readonly string _certName;
 
-        public PeopleService(string path, string? password)
+        public PeopleService(string path, string? certName)
         {
             _path = path;
-            _encryption = new SymmetricEncryption("alamakota");
-            _password = password;
+            _encryption = new AsymmetricEncryption();
+            _certName = certName;
             _entities = LoadData();
         }
         public PeopleService(string path) : this(path, null)
@@ -30,10 +30,10 @@ namespace Services.InFile
             if(File.Exists(_path))
             {
                string json;
-                if (_password == null)
+                if (_certName == null)
                     json = File.ReadAllText(_path);
                 else
-                    json = _encryption.DecryptToString(File.ReadAllBytes(_path), _password);
+                    json = _encryption.DecryptToString(File.ReadAllBytes(_path), _certName);
                 
                 return JsonSerializer.Deserialize<ICollection<Person>>(json) ?? new List<Person>();
             }
@@ -70,10 +70,10 @@ namespace Services.InFile
         private void SaveData()
         {
             string json = JsonSerializer.Serialize(_entities);
-            if (_password == null)
+            if (_certName == null)
                 File.WriteAllText(_path, json);
             else
-                File.WriteAllBytes(_path, _encryption.Encrypt(json, _password));
+                File.WriteAllBytes(_path, _encryption.Encrypt(json, _certName));
         }
 
         /*private void SaveData()

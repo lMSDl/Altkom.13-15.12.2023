@@ -15,7 +15,7 @@ Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("de");
 string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 path = Path.Combine(path, "people.json");
 
-IPeopleService peopleService = new Services.InFile.PeopleService(path, "1234567890");
+IPeopleService peopleService = new Services.InFile.PeopleService(path, "CN=localhost");
 
 Initialize();
 
